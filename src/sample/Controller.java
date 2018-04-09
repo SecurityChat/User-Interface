@@ -1,21 +1,19 @@
 package sample;
 
-
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.beans.EventHandler;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.BufferOverflowException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 
+
 public class Controller {
+
 
     private Stage dialogStage;
 
@@ -39,40 +37,33 @@ public class Controller {
     void initialize() {
         //assert inputArea != null : "fx:id=\"inputArea\" was not injected: check your FXML file 'interface.fxml'.";
         //assert outputArea != null : "fx:id=\"outputArea\" was not injected: check your FXML file 'interface.fxml'.";
-        //buttonSend.setOnAction(event -> {
-            //System.out.println("Hello");
-        //});
-        buttonSend.setOnAction(event -> {
-            isInputValid();
+
+
+        // Реализация кнопки через лямбда-выражение:
+        /*buttonSend.setOnAction(event -> {
+            printMsg();
+        });*/
+
+
+        buttonSend.setOnAction(new javafx.event.EventHandler<javafx.event.ActionEvent>() {
+            @Override
+            public void handle(javafx.event.ActionEvent event) {
+                printMsg();
+            }
         });
     }
 
-
-    private boolean isInputValid() {
-        String errorMessage = "";
-        String text = inputArea.getText();
-
-        if (text != null) {
-            outputArea.setText(text);
-        }
-
-        //Иначе, если текста нет - то НИЧЕГО не происходит...
-        else if (text == null) errorMessage = "Введите сообщение!";
-
-        if (errorMessage.length() == 0) {
-            return true;
-        } else {
-            // Показываем сообщение об ошибке.
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.initOwner(dialogStage);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
-
-            return false;
-        }
+    private String getMsg() {
+        String msg = inputArea.getText();
+        return msg;
     }
 
-}
+    private void printMsg() {
+        String msg = getMsg();
+        inputArea.clear();
+        outputArea.appendText(msg + "\n");
+        outputArea.positionCaret(0);
+    }
 
+
+}
