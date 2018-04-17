@@ -22,8 +22,12 @@ public class Main extends Application {
         launch(args);
     }
 
+    ////////////////
+    ////////////////
 
-
+    private String host;
+    private int port;
+    private String nickname;
 
 
 
